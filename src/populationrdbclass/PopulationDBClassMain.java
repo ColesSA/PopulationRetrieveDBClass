@@ -10,7 +10,6 @@ package populationrdbclass;
  * @author 55colessa31
  */
 public class PopulationDBClassMain {
-    public static Towns towns;
     
     public static void main(String[] args){
         
@@ -29,7 +28,7 @@ public class PopulationDBClassMain {
     }
     
     public static void printTowns(){
-        towns = PopulationDatabaseOperations.retrieveAllTowns();
+        Towns towns = PopulationDatabaseOperations.retrieveAllTowns();
         
         for(int i = 0; i<towns.size();i++){
             System.out.println("Town Number: "+(towns.get(i)).getTownNumber());
@@ -39,5 +38,16 @@ public class PopulationDBClassMain {
             System.out.println("Town Population: "+(towns.get(i)).getPopulation());
             System.out.println();
         }
+    }
+    
+    public static void printTown(int townNumberIn){
+        Town town = PopulationDatabaseOperations.retrieveTown(townNumberIn);
+
+        System.out.println("Town Number: "+town.getTownNumber());
+        System.out.println("Town Name: "+town.getTownName());
+        System.out.println("Town County Number: "+town.getCountyNumber());
+        System.out.println("Town Region Number: "+town.getRegionNumber());
+        System.out.println("Town Population: "+town.getPopulation());
+        System.out.println();
     }
 }
