@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package populationretrievedbclass;
+package populationrdbclass;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -95,5 +97,46 @@ public class PopulationDatabaseOperations {
         }
         return town;
         
+    }
+    
+    public static void insertTown(Town town){
+        String insertStatementTown = "INSERT INTO Population"
+                +" (TownNumber, TownName, CountyNumber, RegionNumber, Population)"
+                +"VALUES(?, ?, ?, ?, ?)";
+        try(Connection connection1 = openConnection()){
+            PreparedStatement statement = connection1.prepareStatement(insertStatementTown);
+            statement.setInt(1, town.getTownNumber());
+            statement.setString(2, town.getTownName());
+            statement.setInt(3, town.getCountyNumber());
+            statement.setInt(4, town.getRegionNumber());
+            statement.setInt(5, town.getPopulation());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void deleteTown(int townNumberIn){
+        String deleteStatementTown = "DELETE FROM Population WHERE TownNumber = ? ";
+        try(Connection connection1 = openConnection()){
+            PreparedStatement statement = connection1.prepareStatement(deleteStatementTown);
+            statement.setInt(1, townNumberIn);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void modifyTownName(String modifyFieldValue, int conditionFieldValue){
+        String modifyStatement = "UPDATE Population SET TownName = ? "
+                + "WHERE TownNumber = ?";
+        try(Connection connection1 = openConnection()){
+            PreparedStatement statement = connection1.prepareStatement(modifyStatement);
+            statement.setString(1, modifyFieldValue);
+            statement.setInt(2, conditionFieldValue);            
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

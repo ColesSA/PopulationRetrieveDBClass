@@ -3,26 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package populationretrievedbclass;
+package populationrdbclass;
 
 /**
  *
  * @author 55colessa31
  */
-public class PopulationRetrieveDBClass {
+public class PopulationDBClassMain {
+    public static Towns towns;
     
-    public static void main(String[] args) {
-        String dbDirectory = "C:/Users/55colessa31/Documents/GitHub/PopulationRetrieveDBClass/";
-        String dbName = "PopulationDB"; // Database Name.
+    public static void main(String[] args){
+        
+        String dbDirectory = "C:/Users/55colessa31/Documents/GitHub/PopulationDBClass/";
+        String dbName = "PopulationDB";
         
         PopulationDatabaseOperations.setConnection(dbDirectory, dbName);
-        Towns towns = PopulationDatabaseOperations.retrieveAllTowns();
-        printTowns(towns);
         
-        System.out.println("Database Operation is Complete.");
+        printTowns();
+        
+        PopulationModifyDeleteDBClass.run();
+        
+        printTowns();
+        
+        System.out.println("Database Operation Complete.");
     }
     
-    public static void printTowns(Towns towns){
+    public static void printTowns(){
+        towns = PopulationDatabaseOperations.retrieveAllTowns();
+        
         for(int i = 0; i<towns.size();i++){
             System.out.println("Town Number: "+(towns.get(i)).getTownNumber());
             System.out.println("Town Name: "+(towns.get(i)).getTownName());
