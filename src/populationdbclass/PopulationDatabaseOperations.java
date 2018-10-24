@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package populationrdbclass;
+package populationdbclass;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,12 +11,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
  * @author 55colessa31
  */
-public class PopulationDatabaseOperationsSteve {
+public class PopulationDatabaseOperations {
     private static String dbProtocol = "jdbc:derby:";
     private static String dbDirectory = "C:/Users/55colessa31/Documents/GitHub/PopulationRetrieveDBClass/";
     private static String dbName = "PopulationDB"; // Database Name.
@@ -136,5 +137,37 @@ public class PopulationDatabaseOperationsSteve {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    public static ArrayList<String> getTableNames(){
+        ArrayList<String> tableNames = new ArrayList<>();
+        String[] tableTypes = {"TABLE"};
+        try(Connection connection1 = openConnection()){
+            ResultSet rs1 = (connection1.getMetaData()).getTables(null, null, "%", tableTypes);
+            while(rs1.next()){
+                tableNames.add(rs1.getString(3)); 
+                // The 3rd position in the result set is the table name.
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tableNames;
+    }
+    
+    public static ArrayList<String> getFieldNames(){
+        ArrayList<String> columnNames = new ArrayList<>(),
+                          tableNames = getTableNames();
+        try(Connection connection1 = openConnection()){
+            for(int i=0;i<tableNames.size();i++){
+                ResultSet rs1 = (connection1.getMetaData()).getColumns(null, null, tableNames.get(i), "%");
+                while(rs1.next()){
+                    columnNames.add(rs1.getString(4)); 
+                    // The 4th position in the result set is the column name.
+                }
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return columnNames;
     }
 }

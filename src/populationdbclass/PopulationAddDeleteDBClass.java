@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package populationrdbclass;
+package populationdbclass;
 
 /**
  *
  * @author 55colessa31
  */
-public class PopulationModifyDeleteDBClass {
+public class PopulationAddDeleteDBClass {
     public static void run(){
         
         int townNumberIn = 19;
-        String TownName = "Pittsburg";
-        
-        PopulationDatabaseOperations.modifyTownName(TownName, townNumberIn);
+               
+        PopulationDatabaseOperations.deleteTown(townNumberIn);
     }
 }

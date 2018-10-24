@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package populationrdbclass;
+package populationdbclass;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,14 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author 55colessa31
  */
-public class PopulationDatabaseOperations {
+public class PopulationDatabaseOperationsSteve {
     private static String dbProtocol = "jdbc:derby:";
     private static String dbDirectory = "C:/Users/55colessa31/Documents/GitHub/PopulationRetrieveDBClass/";
     private static String dbName = "PopulationDB"; // Database Name.

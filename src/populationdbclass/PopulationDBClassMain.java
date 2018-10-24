@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package populationrdbclass;
+package populationdbclass;
 
 /**
  *
@@ -18,11 +18,11 @@ public class PopulationDBClassMain {
         
         PopulationDatabaseOperations.setConnection(dbDirectory, dbName);
         
-        printTowns();
+        //printTowns();
         
-        PopulationModifyDeleteDBClass.run();
+        PopulationFieldNamesDBClass.run();
         
-        printTowns();
+        //printTowns();
         
         System.out.println("Database Operation Complete.");
     }
