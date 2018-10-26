@@ -20,7 +20,7 @@ public class PopulationDBClassMain {
         
         //printTowns();
         
-        PopulationFieldNamesDBClass.run();
+        PopulationDatabaseOperationsCustomException.run();
         
         //printTowns();
         

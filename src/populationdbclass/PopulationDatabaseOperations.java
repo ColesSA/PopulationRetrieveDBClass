@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -120,7 +121,10 @@ public class PopulationDatabaseOperations {
         try(Connection connection1 = openConnection()){
             PreparedStatement statement = connection1.prepareStatement(deleteStatementTown);
             statement.setInt(1, townNumberIn);
-            statement.executeUpdate();
+            int statementResult = statement.executeUpdate();
+            if(statementResult == 0){
+                throw new NoUpdateException("Town Not Found");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -133,7 +137,58 @@ public class PopulationDatabaseOperations {
             PreparedStatement statement = connection1.prepareStatement(modifyStatement);
             statement.setString(1, modifyFieldValue);
             statement.setInt(2, conditionFieldValue);            
-            statement.executeUpdate();
+            int statementResult = statement.executeUpdate();
+            if(statementResult == 0){
+                throw new NoUpdateException("Town Not Found");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void modifyCountyNumber(int modifyFieldValue, int conditionFieldValue){
+        String modifyStatement = "UPDATE Population SET CountyNumber = ? "
+                + "WHERE TownNumber = ?";
+        try(Connection connection1 = openConnection()){
+            PreparedStatement statement = connection1.prepareStatement(modifyStatement);
+            statement.setInt(1, modifyFieldValue);
+            statement.setInt(2, conditionFieldValue);            
+            int statementResult = statement.executeUpdate();
+            if(statementResult == 0){
+                throw new NoUpdateException("Town Not Found");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void modifyRegionNumber(int modifyFieldValue, int conditionFieldValue){
+        String modifyStatement = "UPDATE Population SET RegionNumber = ? "
+                + "WHERE TownNumber = ?";
+        try(Connection connection1 = openConnection()){
+            PreparedStatement statement = connection1.prepareStatement(modifyStatement);
+            statement.setInt(1, modifyFieldValue);
+            statement.setInt(2, conditionFieldValue);            
+            int statementResult = statement.executeUpdate();
+            if(statementResult == 0){
+                throw new NoUpdateException("Town Not Found");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void modifyPopulation(int modifyFieldValue, int conditionFieldValue){
+        String modifyStatement = "UPDATE Population SET Population = ? "
+                + "WHERE TownNumber = ?";
+        try(Connection connection1 = openConnection()){
+            PreparedStatement statement = connection1.prepareStatement(modifyStatement);
+            statement.setInt(1, modifyFieldValue);
+            statement.setInt(2, conditionFieldValue);            
+            int statementResult = statement.executeUpdate();
+            if(statementResult == 0){
+                throw new NoUpdateException("Town Not Found");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -155,15 +210,29 @@ public class PopulationDatabaseOperations {
     }
     
     public static ArrayList<String> getFieldNames(){
-        ArrayList<String> columnNames = new ArrayList<>(),
-                          tableNames = getTableNames();
+        ArrayList<String> columnNames = new ArrayList<>();
         try(Connection connection1 = openConnection()){
-            for(int i=0;i<tableNames.size();i++){
-                ResultSet rs1 = (connection1.getMetaData()).getColumns(null, null, tableNames.get(i), "%");
-                while(rs1.next()){
-                    columnNames.add(rs1.getString(4)); 
-                    // The 4th position in the result set is the column name.
-                }
+            ResultSet rs1 = (connection1.getMetaData()).getColumns(null, null, "Population", "%");
+            while(rs1.next()){
+                columnNames.add(rs1.getString(4)); 
+                // The 4th position in the result set is the column name.
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return columnNames;
+    }
+    
+    public static ArrayList<String> getFieldNamesAlternate(){
+        String query1 = "SELECT * FROM Population";
+        // This assumes we know the table name is Population.
+        ArrayList<String> columnNames = new ArrayList<>();
+        try(Connection connection1 = openConnection()){
+            Statement statement = connection1.createStatement();
+            ResultSet rs1 = statement.executeQuery(query1);
+            ResultSetMetaData rsm1 = rs1.getMetaData();
+            for(int columnNumber = 1; columnNumber <= rsm1.getColumnCount(); columnNumber++){
+                columnNames.add(rsm1.getColumnName(columnNumber));
             }
         }catch (SQLException e) {
             System.out.println(e.getMessage());
